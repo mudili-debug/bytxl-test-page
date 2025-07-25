@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>byteXL New Flavours</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Inter Font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: url('https://www.shutterstock.com/image-photo/raw-organic-vegetables-fresh-ingredients-600nw-364819403.jpg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      color: white;
+      scroll-behavior: smooth;
+    }
+
+    .hero-overlay {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .menu-item-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 2.5rem;
+      border-radius: 0.75rem;
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .close-button {
+      color: #aaa;
+      float: right;
+      font-size: 1.75rem;
+      font-weight: bold;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .section-bg {
+      background-color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .logo .blue {
+      color: #00aaff;
+    }
+    
+    .logo .orange {
+      color: orange;
+      font-size: 14px;
+      vertical-align: super;
+    }
+    
+    .btn {
+      background-color: #e21b1b;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      background-color: #c91414;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .active-filter {
+      background-color: #e21b1b !important;
+      color: white !important;
+    }
+    
+    .menu-item {
+      transition: all 0.3s ease;
+    }
+    
+    .menu-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="navbar bg-gray-900 fixed top-0 left-0 w-full z-50">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="#home" class="logo text-2xl font-bold rounded-md p-2 hover:bg-gray-800 transition-colors">
+          <span class="blue">byte</span><span class="orange">XL</span>
+        </a>
+        <div class="hidden md:flex space-x-4">
+          <a href="#home" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">Home</a>
+          <a href="#about" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">About Us</a>
+          <a href="#menu" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">Menu</a>
+          <a href="#gallery" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">Gallery</a>
+          <a href="#reservation" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">Reservation</a>
+          <a href="#location" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">Location</a>
+          <a href="#blog" class="text-gray-300 hover:text-white font-medium transition-colors rounded-md p-2 hover:bg-gray-800">Blog</a>
+        </div>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      <!-- Mobile Menu Overlay -->
+      <div id="mobile-menu" class="hidden md:hidden bg-gray-900 shadow-lg absolute top-full left-0 w-full py-4">
+        <a href="#home" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">Home</a>
+        <a href="#about" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">About Us</a>
+        <a href="#menu" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">Menu</a>
+        <a href="#gallery" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">Gallery</a>
+        <a href="#reservation" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">Reservation</a>
+        <a href="#location" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">Location</a>
+        <a href="#blog" class="block px-4 py-2 text-gray-300 hover:bg-gray-800 transition-colors">Blog</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mt-16">
+    <!-- Home Section -->
+    <section id="home" class="h-screen flex items-center justify-center text-center p-4">
+      <div class="hero-overlay p-8 rounded-lg shadow-xl max-w-2xl">
+        <h2 class="text-2xl md:text-3xl mb-4">Welcome To</h2>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-8 leading-tight">byteXL New Flavours</h1>
+        <p class="text-xl md:text-2xl mb-8 font-light">Experience the fusion of technology and gastronomy</p>
+        <a href="#reservation" class="btn">Book a Table Now</a>
+      </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-16 section-bg">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">About Our Restaurant</h2>
+        <p class="text-lg leading-relaxed mb-8">
+          byteXL New Flavours is where digital innovation meets culinary excellence. Founded by tech enthusiasts with a passion for food, we've created a unique dining experience that blends cutting-edge technology with gourmet cuisine. Our chefs are masters of both traditional techniques and molecular gastronomy, creating dishes that are as visually stunning as they are delicious.
+        </p>
+        <p class="text-lg leading-relaxed">
+          From our smart reservation system to our interactive dining tables, every aspect of byteXL is designed to delight. Come experience the future of dining where every bite is a byte of perfection.
+        </p>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-16 section-bg">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Our Digital Menu</h2>
+
+        <!-- Menu Filters -->
+        <div class="flex justify-center flex-wrap gap-4 mb-8">
+          <button class="menu-filter-btn bg-gray-800 text-white py-2 px-6 rounded-full shadow-md hover:bg-gray-700 transition-colors active-filter" data-category="all">All</button>
+          <button class="menu-filter-btn bg-gray-800 text-white py-2 px-6 rounded-full shadow-md hover:bg-gray-700 transition-colors" data-category="tech">Tech Specials</button>
+          <button class="menu-filter-btn bg-gray-800 text-white py-2 px-6 rounded-full shadow-md hover:bg-gray-700 transition-colors" data-category="fusion">Fusion</button>
+          <button class="menu-filter-btn bg-gray-800 text-white py-2 px-6 rounded-full shadow-md hover:bg-gray-700 transition-colors" data-category="dessert">Digital Desserts</button>
+        </div>
+
+        <!-- Menu Items Grid -->
+        <div id="menu-items-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Menu Item 1 -->
+          <div class="menu-item bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="tech">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Quantum Quiche" class="menu-item-image">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Quantum Quiche</h3>
+              <p class="text-gray-300 mb-4">Spinach and feta quiche with a quantum twist - changes flavor as you eat!</p>
+              <span class="text-red-500 text-xl font-bold">$18.99</span>
+            </div>
+          </div>
+
+          <!-- Menu Item 2 -->
+          <div class="menu-item bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="fusion">
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="RAMen" class="menu-item-image">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">RAMen</h3>
+              <p class="text-gray-300 mb-4">Japanese ramen with a tech twist - memory-boosting ingredients.</p>
+              <span class="text-red-500 text-xl font-bold">$16.50</span>
+            </div>
+          </div>
+
+          <!-- Menu Item 3 -->
+          <div class="menu-item bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="dessert">
+            <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Binary Brownie" class="menu-item-image">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Binary Brownie</h3>
+              <p class="text-gray-300 mb-4">Chocolate brownie with 0s and 1s design - as delicious as it is geeky.</p>
+              <span class="text-red-500 text-xl font-bold">$12.00</span>
+            </div>
+          </div>
+
+          <!-- Menu Item 4 -->
+          <div class="menu-item bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="tech">
+            <img src="https://images.unsplash.com/photo-1549395156-e0c1fe6fc7a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Cloud Computing Cake" class="menu-item-image">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Cloud Computing Cake</h3>
+              <p class="text-gray-300 mb-4">Light as a cloud cheesecake with blueberry compote.</p>
+              <span class="text-red-500 text-xl font-bold">$14.75</span>
+            </div>
+          </div>
+
+          <!-- Menu Item 5 -->
+          <div class="menu-item bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="fusion">
+            <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Firewall Fajitas" class="menu-item-image">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Firewall Fajitas</h3>
+              <p class="text-gray-300 mb-4">Spicy chicken fajitas with a security twist - they'll protect your taste buds!</p>
+              <span class="text-red-500 text-xl font-bold">$22.00</span>
+            </div>
+          </div>
+
+          <!-- Menu Item 6 -->
+          <div class="menu-item bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="dessert">
+            <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Pixel Pavlova" class="menu-item-image">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Pixel Pavlova</h3>
+              <p class="text-gray-300 mb-4">Crispy meringue with fruit arranged in pixel-perfect patterns.</p>
+              <span class="text-red-500 text-xl font-bold">$13.50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 section-bg">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Our Tech Gallery</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Restaurant Interior" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Interactive Table" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Chef Presentation" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Signature Dish" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Bar Area" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Dessert Display" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1554679665-f5537f187268?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Cooking Process" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1592861956120-e524fc739696?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" alt="Food Presentation" class="w-full h-auto rounded-lg shadow-md transition-transform hover:scale-105">
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="reservation" class="py-16 section-bg">
+      <div class="container mx-auto px-4 max-w-2xl">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Book Your Table</h2>
+        <form id="reservation-form" class="bg-gray-800 p-8 rounded-lg shadow-lg">
+          <div class="mb-6">
+            <label for="name" class="block text-white text-sm font-bold mb-2">Name:</label>
+            <input type="text" id="name" name="name" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Your Name" required>
+          </div>
+          <div class="mb-6">
+            <label for="email" class="block text-white text-sm font-bold mb-2">Email:</label>
+            <input type="email" id="email" name="email" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="your@example.com" required>
+          </div>
+          <div class="mb-6">
+            <label for="phone" class="block text-white text-sm font-bold mb-2">Phone:</label>
+            <input type="tel" id="phone" name="phone" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="+1234567890" required>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label for="date" class="block text-white text-sm font-bold mb-2">Date:</label>
+              <input type="date" id="date" name="date" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" required>
+            </div>
+            <div>
+              <label for="time" class="block text-white text-sm font-bold mb-2">Time:</label>
+              <input type="time" id="time" name="time" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" required>
+            </div>
+          </div>
+          <div class="mb-6">
+            <label for="guests" class="block text-white text-sm font-bold mb-2">Number of Guests:</label>
+            <input type="number" id="guests" name="guests" min="1" max="20" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="e.g., 4" required>
+          </div>
+          <div class="mb-6">
+            <label for="message" class="block text-white text-sm font-bold mb-2">Special Requests (Optional):</label>
+            <textarea id="message" name="message" rows="4" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Allergies, special occasion, etc."></textarea>
+          </div>
+          <div class="flex justify-center">
+            <button type="submit" class="btn py-3 px-8 font-bold">
+              Confirm Reservation
+            </button>
+          </div>
+        </form>
+        <div id="reservation-message" class="mt-8 p-4 bg-green-100 text-green-800 rounded-md text-center hidden">
+          <!-- Reservation confirmation message will appear here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="py-16 section-bg">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Find Us Here</h2>
+        <p class="text-lg mb-4">
+          Visit our tech-inspired space in the heart of the innovation district.
+        </p>
+        <p class="text-xl font-semibold mb-2">101 Tech Boulevard, Silicon Valley, CA 94025</p>
+        <p class="text-lg mb-2">Phone: <a href="tel:+16505551234" class="text-red-500 hover:underline">+1 (650) 555-1234</a></p>
+        <p class="text-lg mb-8">Email: <a href="mailto:info@bytexlflavors.com" class="text-red-500 hover:underline">info@bytexlflavors.com</a></p>
+
+        <!-- Placeholder for map -->
+        <div class="w-full h-80 bg-gray-700 rounded-lg shadow-md flex items-center justify-center text-gray-300 text-lg">
+          <div class="p-4">
+            <i class="fas fa-map-marker-alt text-4xl mb-4 text-red-500"></i>
+            <p>Interactive Map Location</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-16 section-bg">
+      <div class="container mx-auto px-4 text-center max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Our Tech Blog</h2>
+        <p class="text-lg mb-8">
+          Stay updated with our latest culinary innovations and tech integrations!
+        </p>
+        <div class="p-8 bg-gray-800 rounded-lg shadow-lg text-left">
+          <h3 class="text-2xl font-semibold mb-4">Coming Soon: AI-Powered Menu Recommendations!</h3>
+          <p class="text-gray-300">
+            We're developing an AI system that learns your taste preferences and recommends dishes you'll love. Using machine learning algorithms trained on thousands of flavor profiles, our system will create personalized dining experiences for every guest. Stay tuned for this exciting innovation!
+          </p>
+          <div class="mt-6 flex items-center">
+            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+            <div class="ml-4">
+              <p class="font-semibold">Chef Alex Turing</p>
+              <p class="text-sm text-gray-400">Head of Culinary Technology</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-10">
+    <div class="container mx-auto px-4 text-center">
+      <p class="mb-6">&copy; 2025 byteXL New Flavours. All rights reserved.</p>
+      <div class="flex justify-center space-x-6">
+        <a href="https://facebook.com/bytexlflavors" target="_blank" aria-label="Facebook" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+          <i class="fab fa-facebook-f text-2xl"></i>
+        </a>
+        <a href="https://instagram.com/bytexlflavors" target="_blank" aria-label="Instagram" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+          <i class="fab fa-instagram text-2xl"></i>
+        </a>
+        <a href="https://twitter.com/bytexlflavors" target="_blank" aria-label="Twitter" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+          <i class="fab fa-twitter text-2xl"></i>
+        </a>
+        <a href="https://github.com/bytexlflavors" target="_blank" aria-label="GitHub" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom Modal for Confirmation -->
+  <div id="confirmation-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Reservation Confirmed!</h3>
+      <p id="modal-message" class="text-lg text-gray-700 mb-6">
+        Thank you for your reservation. We look forward to seeing you!
+      </p>
+      <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-md transition-colors" onclick="document.getElementById('confirmation-modal').style.display='none'">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+        // Close mobile menu if open
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (!mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Menu filtering
+    const filterButtons = document.querySelectorAll('.menu-filter-btn');
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+
+        // Add active class to the clicked button
+        button.classList.add('active-filter');
+
+        const category = button.dataset.category;
+
+        menuItems.forEach(item => {
+          if (category === 'all' || item.dataset.category === category) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Reservation Form Submission
+    const reservationForm = document.getElementById('reservation-form');
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const modalMessage = document.getElementById('modal-message');
+    const closeButton = document.querySelector('.close-button');
+
+    reservationForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Basic client-side validation
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const guests = document.getElementById('guests').value;
+
+      if (!name || !email || !phone || !date || !time || !guests) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      // Display confirmation message in the modal
+      modalMessage.textContent = `Thank you, ${name}! Your reservation for ${guests} guests on ${date} at ${time} has been confirmed. We look forward to seeing you!`;
+      confirmationModal.style.display = 'flex';
+
+      // Clear the form
+      reservationForm.reset();
+    });
+
+    // Close modal when close button is clicked
+    closeButton.addEventListener('click', () => {
+      confirmationModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside of the modal content
+    window.addEventListener('click', (event) => {
+      if (event.target == confirmationModal) {
+        confirmationModal.style.display = 'none';
+      }
+    });
+
+    // Set min date for reservation to today
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      document.getElementById('date').min = `${year}-${month}-${day}`;
+    });
+  </script>
+</body>
+</html>
